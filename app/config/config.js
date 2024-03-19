@@ -1,4 +1,4 @@
-require('dotenv').config(); // Charge les variables d'environnement depuis .env
+require('dotenv').config();
 
 const {
   DB_USERNAME,
