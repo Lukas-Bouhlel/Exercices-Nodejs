@@ -13,10 +13,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       type: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('softwood', 'exotic wood', 'noble and hardwoods'),
+        allowNull: false,
       },
       hardness: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('tender', 'medium-hard', 'hard'),
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
