@@ -14,7 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Wood.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Name is required."
+        }
+      }
+    },
     type: {
       type: DataTypes.ENUM('softwood', 'exotic wood', 'noble and hardwoods'),
       allowNull: false,
@@ -25,8 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Wood',
-    timestamps: true
+    modelName: 'Wood'
   });
   return Wood;
 };
