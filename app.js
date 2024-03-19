@@ -8,6 +8,7 @@ db.sequelize
 .then(() => console.log("Database connected ..."))
 .catch((err) => console.log(err));
 
+app.use(express.json());
 app.use("/api", router);
 
 module.exports = app;
