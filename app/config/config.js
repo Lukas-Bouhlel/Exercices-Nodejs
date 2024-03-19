@@ -18,14 +18,14 @@ module.exports = {
   test: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: `${DB_DATABASE}_test`,
+    database: DB_DATABASE,
     host: DB_HOST,
     dialect: 'mysql'
   },
   production: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: `${DB_DATABASE}_prod`,
+    database: DB_DATABASE,
     host: DB_HOST,
     dialect: 'mysql'
   }
