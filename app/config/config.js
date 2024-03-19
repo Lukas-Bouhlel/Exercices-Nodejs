@@ -5,7 +5,6 @@ const {
   DB_PASSWORD,
   DB_DATABASE,
   DB_HOST,
-  NODE_ENV
 } = process.env;
 
 module.exports = {
