@@ -13,6 +13,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       type: {
         type: Sequelize.ENUM('softwood', 'exotic wood', 'noble and hardwoods'),
         allowNull: false,
