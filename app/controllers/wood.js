@@ -10,3 +10,15 @@ exports.readAll = async (req, res) => {
         });
     }
 }
+
+exports.findByHardness = async (req, res) => {
+    const { hardness } = req.params;
+    try {
+        const woods = await Wood.findAll({ where: { hardness } });
+        res.status(200).json(woods);
+    } catch(error) {
+        res.status(500).json({ 
+            message: error.message || 'Could not find woods by hardness' 
+        });
+    }
+}
