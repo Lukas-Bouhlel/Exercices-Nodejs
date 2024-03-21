@@ -60,6 +60,37 @@ exports.updateWood = async (req, res) => {
     }
 }
 
+exports.deleteWood = async (req, res) => {
+    try {
+        let wood = await Wood.findByPk(req.params.id);
+
+        if (!wood) {
+            return res.status(404).json({
+                error: "Wood not found"
+            })
+        }
+
+        if(wood.image) {
+            const filename = wood.image.split("/uploads/")[1];
+            fs.unlink(`uploads/${filename}`, (err) => {
+                if (err) {
+                    console.error(`Error deleting image ${filename}: ${err.message}`);
+                } else {
+                    console.log(`Image ${filename} deleted`);
+                }
+            });
+        }
+        
+        await wood.destroy(wood);
+
+        res.status(204).json(wood);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message || 'Could not update wood'
+        });
+    }
+}
+
 exports.readAll = async (req, res) => {
     try {
         const woods = await Wood.findAll()

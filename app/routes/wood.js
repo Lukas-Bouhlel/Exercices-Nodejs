@@ -12,4 +12,6 @@ router.post("/create", auth, multer, woodCtrl.createWood);
 
 router.put("/update/:id", auth, multer, woodCtrl.updateWood);
 
+router.delete("/delete/:id", auth, multer, woodCtrl.deleteWood);
+
 module.exports = router;
