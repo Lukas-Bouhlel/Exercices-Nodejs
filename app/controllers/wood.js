@@ -83,7 +83,7 @@ exports.deleteWood = async (req, res) => {
         
         await wood.destroy(wood);
 
-        res.status(204).json(wood);
+        res.status(204).send();
     } catch (error) {
         res.status(500).json({
             message: error.message || 'Could not update wood'
