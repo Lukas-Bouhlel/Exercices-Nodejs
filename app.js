@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const router = require("./app/routes/index.js");
 const path = require('path');
@@ -10,6 +11,7 @@ db.sequelize
 .catch((err) => console.log(err));
 
 app.use(express.json());
+app.use(cors(process.env.ORIGIN));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api", router);
 
