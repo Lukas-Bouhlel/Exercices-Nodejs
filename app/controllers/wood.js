@@ -11,7 +11,7 @@ exports.createWood = async (req, res) => {
         });
         newWood = {
             ...newWood.toJSON(),
-            links: hateoasifyCollectionWood(newWood.id, newWood.hardness),
+            links: hateoasifyWood(newWood.id, newWood.hardness),
         };
         res.status(201).json(newWood);
     } catch (error) {
@@ -59,7 +59,7 @@ exports.updateWood = async (req, res) => {
 
         wood = {
             ...wood.toJSON(),
-            links: hateoasifyCollectionWood(wood.id, wood.hardness)
+            links: hateoasifyWood(wood.id, wood.hardness)
         };
 
         res.status(200).json(wood);
@@ -107,10 +107,10 @@ exports.readAll = async (req, res) => {
         let woodsWithLinks = woods.map(wood => {
             return {
                 ...wood.toJSON(),
-                links: hateoasifyCollectionWood(wood.id, wood.hardness),
+                links: hateoasifyWood(wood.id, wood.hardness),
             };
         });
-        res.status(200).json({ woodsWithLinks, links: hateoasifyWood() });
+        res.status(200).json({ woodsWithLinks, links: hateoasifyCollectionWood() });
     } catch (error) {
         res.status(500).json({
             message: error.message || 'Could not read all wood'
@@ -125,10 +125,10 @@ exports.findByHardness = async (req, res) => {
         let woodsWithLinks = woods.map(wood => {
             return {
                 ...wood.toJSON(),
-                links: hateoasifyCollectionWood(wood.id, wood.hardness),
+                links: hateoasifyWood(wood.id, wood.hardness),
             };
         });
-        res.status(200).json({ woodsWithLinks, links: hateoasifyWood() });
+        res.status(200).json({ woodsWithLinks, links: hateoasifyCollectionWood() });
     } catch (error) {
         res.status(500).json({
             message: error.message || 'Could not find woods by hardness'

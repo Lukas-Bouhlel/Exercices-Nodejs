@@ -1,4 +1,4 @@
-exports.hateoasifyWood = () => {
+exports.hateoasifyCollectionWood = () => {
     return [
         { 
             rel: "readall", 
@@ -18,7 +18,7 @@ exports.hateoasifyWood = () => {
     ];
 }
 
-exports.hateoasifyCollectionWood = (woodId, hardness) => {
+exports.hateoasifyWood = (woodId, hardness) => {
     return [
         { 
             rel: "self", 
