@@ -19,9 +19,8 @@ exports.createWood = async (req, res) => {
 exports.updateWood = async (req, res) => {
     try {
         let wood = await Wood.findByPk(req.params.id);
-        const pathname = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-        
-        if(!wood) {
+
+        if (!wood) {
             return res.status(404).json({
                 error: "Wood not found"
             })
@@ -31,20 +30,24 @@ exports.updateWood = async (req, res) => {
             ...JSON.parse(req.body.datas)
         }
 
-        newWood = {
-            ...newWood,
-            image: pathname
-        };
+        if (req.file) {
+            const pathname = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+            
+            newWood = {
+                ...newWood,
+                image: pathname
+            };
 
-        if (wood.image) {
-            const filename = wood.image.split("/uploads/")[1];
-            fs.unlink(`uploads/${filename}`, (err) => {
-                if (err) {
-                    console.error(`Error deleting image ${filename}: ${err.message}`);
-                } else {
-                    console.log(`Image ${filename} deleted`);
-                }
-            });
+            if (wood.image) {
+                const filename = wood.image.split("/uploads/")[1];
+                fs.unlink(`uploads/${filename}`, (err) => {
+                    if (err) {
+                        console.error(`Error deleting image ${filename}: ${err.message}`);
+                    } else {
+                        console.log(`Image ${filename} deleted`);
+                    }
+                });
+            }
         }
 
         await wood.update(newWood);
