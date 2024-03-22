@@ -1,10 +1,11 @@
 const { Wood } = require('../models');
 const fs = require('fs');
 const { hateoasifyWood, hateoasifyCollectionWood } = require('../helpers/hateoas');
+let dirname = process.env.BASE_DIR;
 
 exports.createWood = async (req, res) => {
     try {
-        const pathname = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+        const pathname = `${req.protocol}://${req.get("host")}/${dirname}/${req.file.filename}`;
         let newWood = await Wood.create({
             ...JSON.parse(req.body.datas),
             image: pathname,
@@ -36,7 +37,7 @@ exports.updateWood = async (req, res) => {
         }
 
         if (req.file) {
-            const pathname = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+            const pathname = `${req.protocol}://${req.get("host")}/${dirname}/${req.file.filename}`;
 
             updateWood = {
                 ...updateWood,
@@ -44,8 +45,8 @@ exports.updateWood = async (req, res) => {
             };
 
             if (wood.image) {
-                const filename = wood.image.split("/uploads/")[1];
-                fs.unlink(`uploads/${filename}`, (err) => {
+                const filename = wood.image.split(`/${dirname}/`)[1];
+                fs.unlink(`${dirname}/${filename}`, (err) => {
                     if (err) {
                         console.error(`Error deleting image ${filename}: ${err.message}`);
                     } else {
@@ -81,8 +82,8 @@ exports.deleteWood = async (req, res) => {
         }
 
         if (wood.image) {
-            const filename = wood.image.split("/uploads/")[1];
-            fs.unlink(`uploads/${filename}`, (err) => {
+            const filename = wood.image.split(`/${dirname}/`)[1];
+            fs.unlink(`${dirname}/${filename}`, (err) => {
                 if (err) {
                     console.error(`Error deleting image ${filename}: ${err.message}`);
                 } else {
