@@ -20,6 +20,8 @@ db.sequelize
 app.use(express.json());
 app.use(cors(process.env.ORIGIN));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/api", router);
+
+const { apiLimiter } = require('./app/middleware/limiter.js');
+app.use("/api", apiLimiter, router);
 
 module.exports = app;
