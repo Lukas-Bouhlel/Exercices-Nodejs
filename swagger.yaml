@@ -299,12 +299,8 @@ components:
     WoodCreateRequest:
       type: object
       properties:
-        name:
-          type: string
-        type:
-          type: string
-        hardness:
-          type: string
+        datas:
+          type: object
         image:
           type: file
           format: jpg, png, gif, png, webp 
@@ -312,12 +308,8 @@ components:
     WoodUpdateRequest:
       type: object
       properties:
-        name:
-          type: string
-        type:
-          type: string
-        hardness:
-          type: string
+        datas:
+          type: object
         image:
           type: file
           format: jpg, png, gif, png, webp 
