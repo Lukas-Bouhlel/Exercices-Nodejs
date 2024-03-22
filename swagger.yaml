@@ -1,0 +1,347 @@
+openapi: 3.0.3
+info:
+  title: Woods API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api-docs
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '500':
+          description: An error occurred during login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/signup:
+    post:
+      summary: Signup
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: Successful signup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithTimestamps'
+        '500':
+          description: Could not create user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /wood/:
+    get:
+      summary: Read all woods
+      tags:
+        - Wood
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WoodsResponse'
+        '500':
+          description: Could not read all wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /wood/{hard}:
+    get:
+      summary: Find woods by hardness
+      tags:
+        - Wood
+      parameters:
+        - name: hard
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WoodsByHardnessResponse'
+        '500':
+          description: Could not find woods by hardness
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /wood/create:
+    post:
+      summary: Create a wood
+      tags:
+        - Wood
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WoodCreateRequest'
+      responses:
+        '201':
+          description: Successful creation of wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WoodWithLinks'
+        '500':
+          description: Could not create wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /wood/update/{id}:
+    put:
+      summary: Update a wood by ID
+      tags:
+        - Wood
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WoodUpdateRequest'
+      responses:
+        '200':
+          description: Successful update of wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WoodWithLinks'
+        '404':
+          description: Wood not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Could not update wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /wood/delete/{id}:
+    delete:
+      summary: Delete a wood by ID
+      tags:
+        - Wood
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+      responses:
+        '204':
+          description: Successful delete of wood
+        '404':
+          description: Wood not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Could not delete wood
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          example: 123456
+
+    SignupRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@test.com
+        password:
+          type: string
+          example: 123456
+        firstName:
+          type: string
+          example: test
+        lastName:
+          type: string
+          example: test
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "{token}"
+        user:
+          $ref: '#/components/schemas/UserWithTimestamps'
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+    UserWithTimestamps:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    WoodsResponse:
+      type: object
+      properties:
+        woodsWithLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/WoodWithLinks'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+
+    WoodsByHardnessResponse:
+      type: object
+      properties:
+        woodsWithLinks:
+          type: array
+          items:
+            $ref: '#/components/schemas/WoodWithLinks'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+
+    WoodCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        hardness:
+          type: string
+        image:
+          type: string
+
+    WoodUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        hardness:
+          type: string
+        image:
+          type: string
+
+    WoodWithLinks:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+        hardness:
+          type: string
+        image:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/Link'
+
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+        method:
+          type: string
+
+security:
+  - Bearer Token: []

@@ -96,7 +96,7 @@ exports.deleteWood = async (req, res) => {
         res.status(204).send();
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'Could not update wood'
+            message: error.message || 'Could not delete wood'
         });
     }
 }
